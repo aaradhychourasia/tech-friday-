@@ -1,0 +1,8 @@
+{
+  "name": "Tech Friday",
+  "description": "The ultimate AI assistant combining the fluency of GPT, the reasoning of Gemini, the research of Perplexity, and the insight of Grok.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ]
+}

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tech Friday</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Bangers&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #0f172a; /* Slate 900 */
+        color: #e2e8f0; /* Slate 200 */
+        transition: background-color 0.5s ease;
+      }
+      /* Custom scrollbar for webkit */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1e293b; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #475569; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #64748b; 
+      }
+
+      /* --- MANGA MODE STYLES --- */
+      .manga-theme {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f0f0f0;
+        --text-primary: #000000;
+        --border-thick: 3px solid #000000;
+        --shadow-hard: 5px 5px 0px #000000;
+        font-family: 'Inter', sans-serif; /* Keep readable font for body, maybe specific headers get comic font */
+      }
+
+      .manga-theme body, 
+      .manga-theme main,
+      .manga-theme .bg-slate-950 {
+        background-color: var(--bg-primary) !important;
+        color: var(--text-primary) !important;
+      }
+
+      /* Halftone Background Pattern */
+      .manga-theme .manga-bg {
+        background-image: radial-gradient(#000 1px, transparent 1px);
+        background-size: 20px 20px;
+        opacity: 0.15;
+      }
+
+      /* Header Overrides */
+      .manga-theme header {
+        background: white !important;
+        border-bottom: var(--border-thick) !important;
+        box-shadow: 0 4px 0 #eee;
+      }
+      .manga-theme header h1 {
+        font-family: 'Bangers', cursive;
+        letter-spacing: 1px;
+        font-size: 1.5rem;
+        color: black !important;
+        text-transform: uppercase;
+      }
+
+      /* Chat Bubbles Overrides */
+      /* Note: We target the tailwind classes broadly or use specific specificity */
+      .manga-theme .chat-bubble-container {
+        border: var(--border-thick) !important;
+        background: white !important;
+        color: black !important;
+        border-radius: 4px !important;
+        box-shadow: var(--shadow-hard) !important;
+        transform: rotate(-1deg);
+        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .manga-theme .chat-bubble-container:hover {
+        transform: rotate(0deg) scale(1.02);
+      }
+      
+      .manga-theme .user-bubble-container {
+        background: black !important;
+        color: white !important;
+        border: var(--border-thick) !important;
+        box-shadow: -5px 5px 0px #888 !important;
+        transform: rotate(1deg);
+      }
+      .manga-theme .user-bubble-container * {
+        color: white !important;
+      }
+      .manga-theme .user-bubble-container .markdown-content {
+        color: white !important;
+      }
+
+      /* Input Area Overrides */
+      .manga-theme footer {
+        background: white !important;
+        border-top: var(--border-thick) !important;
+      }
+      .manga-theme textarea {
+        background: #f8f8f8 !important;
+        border: 2px solid black !important;
+        color: black !important;
+        border-radius: 8px !important;
+      }
+      .manga-theme .input-btn {
+        color: black !important;
+        border: 2px solid transparent;
+      }
+      .manga-theme .input-btn:hover {
+        background: #eee !important;
+        border: 2px solid black !important;
+        transform: scale(1.1);
+      }
+      .manga-theme .send-btn {
+        background: black !important;
+        color: white !important;
+        border: 2px solid black !important;
+        box-shadow: 3px 3px 0px #888;
+      }
+      .manga-theme .send-btn:hover {
+        transform: translate(-1px, -1px);
+        box-shadow: 4px 4px 0px #888;
+      }
+      .manga-theme .send-btn:active {
+        transform: translate(2px, 2px);
+        box-shadow: 1px 1px 0px #888;
+      }
+
+      /* Animation: Action Lines (Speed Lines) */
+      @keyframes speed-lines-anim {
+        0% { transform: scale(1) rotate(0deg); opacity: 0.1; }
+        50% { transform: scale(1.05) rotate(1deg); opacity: 0.2; }
+        100% { transform: scale(1) rotate(0deg); opacity: 0.1; }
+      }
+      .manga-speed-lines {
+        background: repeating-conic-gradient(
+          from 0deg,
+          transparent 0deg 10deg,
+          rgba(0,0,0,0.1) 10deg 12deg
+        );
+        animation: speed-lines-anim 0.2s infinite linear;
+      }
+
+      /* Animation: Pop In */
+      @keyframes manga-pop {
+        0% { transform: scale(0.5); opacity: 0; }
+        70% { transform: scale(1.05); }
+        100% { transform: scale(1); opacity: 1; }
+      }
+      .manga-theme .message-enter-active {
+        animation: manga-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      }
+
+      /* --- JUTSU ANIMATIONS --- */
+
+      /* CHAKRA AURA (Loading) */
+      @keyframes chakra-pulse {
+        0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+        70% { box-shadow: 0 0 0 60px rgba(99, 102, 241, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+      }
+
+      /* KATON (Fire Style) */
+      @keyframes fire-surge {
+        0% { transform: translateY(100%) scale(0.5); opacity: 0; }
+        20% { opacity: 1; }
+        50% { transform: translateY(0) scale(1.5); opacity: 0.8; }
+        100% { transform: translateY(-20%) scale(2); opacity: 0; }
+      }
+      .jutsu-fire {
+        background: radial-gradient(circle, rgba(255,200,0,1) 0%, rgba(255,100,0,0.8) 40%, rgba(255,0,0,0) 70%);
+        filter: blur(8px);
+        mix-blend-mode: screen;
+      }
+
+      /* SUITON (Water Style) */
+      @keyframes water-wave {
+        0% { transform: translateX(-100%) skewX(-20deg); opacity: 0.6; }
+        100% { transform: translateX(100%) skewX(-20deg); opacity: 0.6; }
+      }
+      .jutsu-water {
+        background: linear-gradient(180deg, rgba(56,189,248,0) 0%, rgba(14,165,233,0.8) 50%, rgba(2,132,199,0) 100%);
+        mix-blend-mode: overlay;
+        filter: blur(4px);
+      }
+
+      /* RAITON (Lightning Style / Chidori) */
+      @keyframes lightning-flash {
+        0%, 100% { opacity: 0; }
+        5%, 15%, 25% { opacity: 1; background-color: #fff; }
+        10%, 20% { opacity: 0.1; background-color: #60a5fa; }
+      }
+      .jutsu-lightning-flash {
+        animation: lightning-flash 0.5s linear infinite;
+      }
+
+      /* RASENGAN (Wind/Swirl) */
+      @keyframes rasengan-spin {
+        0% { transform: translate(-50%, -50%) rotate(0deg) scale(0.1); opacity: 0; }
+        20% { transform: translate(-50%, -50%) rotate(180deg) scale(1); opacity: 1; }
+        100% { transform: translate(-50%, -50%) rotate(1080deg) scale(1.2); opacity: 0.8; }
+      }
+      .jutsu-rasengan {
+        background: radial-gradient(circle, #fff 10%, #60a5fa 40%, transparent 70%);
+        box-shadow: 0 0 40px #3b82f6, inset 0 0 20px #93c5fd;
+        border-radius: 50%;
+        mix-blend-mode: screen;
+      }
+
+      /* KAGE BUNSHIN (Shadow Clone / Smoke) */
+      @keyframes poof-scale {
+        0% { transform: translate(-50%, -50%) scale(0.1); opacity: 0; }
+        50% { opacity: 1; }
+        100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.33.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react-markdown": "https://esm.sh/react-markdown@^10.1.0",
+    "clsx": "https://esm.sh/clsx@^2.1.1",
+    "react-syntax-highlighter/": "https://esm.sh/react-syntax-highlighter@^16.1.0/",
+    "react-syntax-highlighter": "https://esm.sh/react-syntax-highlighter@^16.1.0",
+    "remark-gfm": "https://esm.sh/remark-gfm@^4.0.1",
+    "three": "https://esm.sh/three@0.160.0",
+    "three/addons/": "https://esm.sh/three@0.160.0/examples/jsm/",
+    "three/": "https://esm.sh/three@^0.182.0/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
